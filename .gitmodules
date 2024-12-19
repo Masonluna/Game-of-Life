@@ -1,0 +1,3 @@
+[submodule "LifeSim/vendor/Scribble2D"]
+	path = LifeSim/vendor/Scribble2D
+	url = https://github.com/Masonluna/Scribble2D
