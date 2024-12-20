@@ -4,10 +4,8 @@
 #include <algorithm>
 
 Life::World::World(unsigned int width, unsigned int height)
-	: m_Width(width), m_Height(height), m_Grid(width * height)
+	: m_Width(width), m_Height(height), m_Grid(std::make_shared<std::vector<Cell>>(width * height)), m_Backbuffer(std::make_shared<std::vector<Cell>>(width * height))
 {
-    m_Grid.resize(m_Width * m_Height);
-    m_Backbuffer.resize(m_Width * m_Height);
 }
 
 
@@ -16,13 +14,16 @@ void Life::World::Update()
 {
     for (int i = 0; i < m_Width; i++) {
         for (int j = 0; j < m_Height; j++) {
-            Cell cell;
-            cell.setAlive(CheckForLife(i, j));
-            m_Backbuffer[i + j * m_Width] = cell;
+            m_Backbuffer->at(i + j * m_Width).SetAlive(CheckForLife(i, j));
         }
     }
 
-    m_Grid = m_Backbuffer;
+    std::swap(m_Grid, m_Backbuffer);
+}
+
+void Life::World::InitCell(int gridX, int gridY, float posX, float posY, float width, float height, float rotation, glm::vec3& color)
+{
+    SetCellAt(gridX, gridY, Cell(posX, posY, width, height, rotation, color));
 }
 
 // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -49,14 +50,14 @@ bool Life::World::CheckForLife(unsigned int xPos, unsigned int yPos)
         // Check if the neighbor is within bounds
         if (neighborX >= 0 && neighborX <= maxX && neighborY >= 0 && neighborY <= maxY) {
             const Life::Cell& neighborCell = GetCellAt(neighborX, neighborY);
-            if (neighborCell.isAlive()) {
+            if (neighborCell.IsAlive()) {
                 liveNeighbors++;
             }
         }
     }
 
     const Life::Cell& cell = GetCellAt(xPos, yPos);
-    if ((liveNeighbors == 2 && cell.isAlive()) || liveNeighbors == 3) {
+    if ((liveNeighbors == 2 && cell.IsAlive()) || liveNeighbors == 3) {
         return true;
     }
     else {

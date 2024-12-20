@@ -1,20 +1,24 @@
 #pragma once
-#include <string>
+#include "Scribble2D/Scene/Object.h"
+#include "Scribble2D/Renderer/Renderer.h"
 
 namespace Life {
 
-	class Cell
+	class Cell : public Scribble::Object
 	{
 	public:
-		Cell() : m_Alive(false) {}
+
+		Cell() = default;
+		Cell(float x, float y, float width, float height, float rotation, glm::vec3& color);
+
 		~Cell() {}
+		
+		void Draw(Scribble::Renderer& renderer) const;
+		void SetAlive(bool val) { m_IsAlive = val; }
+		inline const bool IsAlive() const { return m_IsAlive; }
 
-		inline bool isAlive() const { return m_Alive; }
-		inline void setAlive(bool alive) { m_Alive = alive; }
-
-		std::string ToString() { return m_Alive ? "Cell is alive!" : "Cell is Dead..."; }
 	private:
-		bool m_Alive;
+		bool m_IsAlive = false;
 	};
 
 }
