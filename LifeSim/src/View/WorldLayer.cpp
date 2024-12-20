@@ -1,4 +1,5 @@
 #include "WorldLayer.h"
+#include <Scribble2D/Events/KeyEvent.h>
 
 Life::WorldLayer::WorldLayer(int windowWidth, int windowHeight, int width, int height)
 	: Scribble::Layer("World"), m_World(width, height)
@@ -50,6 +51,20 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 	for (const Cell& cell : *m_World.GetGrid()) {
 		cell.Draw(m_Renderer);
 	}
+}
+
+void Life::WorldLayer::OnEvent(Scribble::Event& e)
+{
+	Scribble::EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<Scribble::KeyPressedEvent>(std::bind(&Life::WorldLayer::OnEnterButtonPressed, this, std::placeholders::_1));
+
+}
+
+bool Life::WorldLayer::OnEnterButtonPressed(Scribble::KeyPressedEvent& e)
+{
+	SCB_TRACE("WorldLayer::OnEnterButtonPressed");
+	StartSim();
+	return false;
 }
 
 
