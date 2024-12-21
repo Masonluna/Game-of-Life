@@ -5,6 +5,8 @@
 #include "Scribble2D/Renderer/Renderer.h"
 #include "Scribble2D/Core/Log.h"
 #include "Scribble2D/Events/KeyEvent.h"
+#include "Scribble2D/Events/MouseEvent.h"
+#include "Scribble2D/Core/Input.h"
 
 
 
@@ -13,27 +15,39 @@ namespace Life {
 	class WorldLayer : public Scribble::Layer
 	{
 	public:
-		WorldLayer(int windowWidth, int windowHeight, int width, int height);
+		WorldLayer(int width, int height);
 
+		// Engine update and event handling
 		void OnUpdate(Scribble::Timestep ts) override;
 		void OnEvent(Scribble::Event& e) override;
-		bool OnEnterButtonPressed(Scribble::KeyPressedEvent& e);
+		bool OnEnterKeyPressed(Scribble::KeyPressedEvent& e);
+		bool OnMouseButtonPressed(Scribble::MouseButtonPressedEvent& e);
+		bool OnSpacebarKeyPressed(Scribble::KeyPressedEvent& e);
+		bool OnWindowResize(Scribble::WindowResizeEvent& e);
 
 
-		void StartSim() { if (!m_StartedSim) { m_StartedSim = true; } }
+		// Coordinate Accessors
+		const glm::vec2 GetCellCoords(float xPos, float yPos) const;
+		glm::vec2 GetCellCoords(float xPos, float yPos);
+
 
 	private:
-		bool m_StartedSim = false;
-		Scribble::Renderer m_Renderer;
-		World m_World;
-		float m_TimeElapsed = 0.0f;
-
+		void OnPauseButtonPressed() { m_StartedSim = !m_StartedSim; }
+		void Reset();
+		void ResetSize();
 		void OncePerSecond()
 		{
 			if (m_StartedSim) {
 				m_World.Update();
 			}
 		}
+
+	private:
+		bool m_StartedSim = false;
+		Scribble::Renderer m_Renderer;
+		World m_World;
+		float m_TimeElapsed = 0.0f;
+		float m_ScaleFactor = 0.0f;
 	};
 
 }

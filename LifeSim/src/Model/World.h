@@ -17,6 +17,8 @@ namespace Life {
 		std::shared_ptr<std::vector<Cell>> GetGrid() { return m_Grid; }
 		const Cell& GetCellAt(unsigned int xPos, unsigned int yPos) const { return m_Grid->at(yPos * m_Width + xPos); }
 		Cell& GetCellAt(unsigned int xPos, unsigned int yPos) { return m_Grid->at(yPos * m_Width + xPos); }
+
+
 		void SetCellAt(unsigned int x, unsigned int y, Cell cell) 
 		{ 
 			m_Grid->at(y * m_Width + x) = cell; 
@@ -28,6 +30,7 @@ namespace Life {
 
 		void Update();
 		void InitCell(int gridX, int gridY, float posX, float posY, float width, float height, float rotation, glm::vec3& color);
+		void ResetCell(int gridX, int gridY, float posX, float posY, float width, float height, float rotation, glm::vec3& color, bool isAlive);
 	private:
 		bool CheckForLife(unsigned int xPos, unsigned int yPos);
 		unsigned int m_Width;

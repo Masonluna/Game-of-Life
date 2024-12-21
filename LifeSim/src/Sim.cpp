@@ -9,10 +9,10 @@ namespace Life {
     class Sim : public Scribble::Application
     {
     public:
-        Sim()
-            : Scribble::Application()
+        Sim(Scribble::WindowSpecs specs)
+            : Scribble::Application(specs)
         {
-            PushLayer(new WorldLayer(this->GetWindow().GetWidth(), this->GetWindow().GetHeight(), 50, 50));
+            PushLayer(new WorldLayer(320, 180));
         }
         ~Sim() {}
 
@@ -21,5 +21,6 @@ namespace Life {
 
 Scribble::Application* Scribble::CreateApplication()
 {
-    return new Life::Sim();
+    Scribble::WindowSpecs specs("Conway's Game of Life", 1920, 1080);
+    return new Life::Sim(specs);
 }

@@ -9,7 +9,7 @@ namespace Life {
 	public:
 
 		Cell() = default;
-		Cell(float x, float y, float width, float height, float rotation, glm::vec3& color);
+		Cell(float x, float y, float width, float height, float rotation, glm::vec3& color, bool isAlive = false);
 
 		~Cell() {}
 		

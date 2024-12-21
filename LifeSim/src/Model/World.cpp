@@ -8,8 +8,6 @@ Life::World::World(unsigned int width, unsigned int height)
 {
 }
 
-
-
 void Life::World::Update()
 {
     for (int i = 0; i < m_Width; i++) {
@@ -24,6 +22,11 @@ void Life::World::Update()
 void Life::World::InitCell(int gridX, int gridY, float posX, float posY, float width, float height, float rotation, glm::vec3& color)
 {
     SetCellAt(gridX, gridY, Cell(posX, posY, width, height, rotation, color));
+}
+
+void Life::World::ResetCell(int gridX, int gridY, float posX, float posY, float width, float height, float rotation, glm::vec3& color, bool isAlive)
+{
+    SetCellAt(gridX, gridY, Cell(posX, posY, width, height, rotation, color, isAlive));
 }
 
 // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
