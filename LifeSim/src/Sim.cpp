@@ -1,7 +1,7 @@
 #include "Model/World.h"
 #include "Model/Cell.h"
 #include "View/WorldLayer.h"
-#include <Scribble2D.h>
+#include <Scribble2D/Scribble2D.h>
 #include <Scribble2D/Core/Window.h>
 #include <iostream>
 

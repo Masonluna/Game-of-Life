@@ -8,8 +8,6 @@ workspace "LifeSim"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-    include "LifeSim/vendor/Scribble2D/Scribble2D-Core"
-
     project "LifeSim"
         location "LifeSim"
         kind "ConsoleApp"
@@ -25,29 +23,15 @@ workspace "LifeSim"
 
         includedirs {
             "%{prj.name}/src",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/src",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/vendor/spdlog/include",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/vendor/GLFW/include",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/vendor/Glad/include",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/vendor/glm/glm-1.0.1"
+            "%{prj.name}/vendor/Scribble2D/include"
         }
 
         libdirs {
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/vendor/spdlog/lib",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/vendor/GLFW/lib",
-            "%{prj.name}/vendor/Scribble2D/Scribble2D-Core/vendor/Glad/build/Debug"
-
+            "%{prj.name}/vendor/Scribble2D/lib/Debug",
+            "%{prj.name}/vendor/Scribble2D/lib/Release"
         }
 
 
-        links {
-            "Scribble2D-Core",
-            "glfw3_mt.lib",
-            "Glad",
-            "opengl32.lib",
-            "spdlog.lib"
-        }
 
         filter "system:windows"
             cppdialect "C++17"
@@ -55,9 +39,11 @@ workspace "LifeSim"
             systemversion "latest"
 
         filter "configurations:Debug"
+            links { "Scribble2D-Core_Debug.lib" }
             symbols "On"
 
         filter "configurations:Release"
+            links { "Scribble2D-Core_Release.lib" }
             optimize "On"
 
         filter "action:vs*"

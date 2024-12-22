@@ -131,11 +131,11 @@ void Life::WorldLayer::Reset()
 
 
 
-	m_World.GetCellAt(48, 47).SetAlive(true);
-	m_World.GetCellAt(48, 48).SetAlive(true);
-	m_World.GetCellAt(47, 47).SetAlive(true);
-	m_World.GetCellAt(48, 46).SetAlive(true);
-	m_World.GetCellAt(49, 48).SetAlive(true);
+	m_World.GetCellAt(160, 90).SetAlive(true);
+	m_World.GetCellAt(160, 91).SetAlive(true);
+	m_World.GetCellAt(159, 90).SetAlive(true);
+	m_World.GetCellAt(160, 89).SetAlive(true);
+	m_World.GetCellAt(161, 91).SetAlive(true);
 }
 
 void Life::WorldLayer::ResetSize()
@@ -167,9 +167,6 @@ void Life::WorldLayer::ResetSize()
 			);
 		}
 	}
-
-
-
 }
 
 
