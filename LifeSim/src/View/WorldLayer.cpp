@@ -6,7 +6,7 @@
 // TODO: As of now, width and height are hardcoded, including the off-screen portion.
 //	A buffer offset should be decided on and added to width and height in m_World constructor.
 Life::WorldLayer::WorldLayer(int width, int height)
-	: Scribble::Layer("World"), m_World(width, height)
+	: Scribble::Layer("World"), m_World(width + GRID_OFFSET_X, height + GRID_OFFSET_Y)
 {
 	m_Renderer.Init();
 	Reset();
@@ -83,22 +83,23 @@ bool Life::WorldLayer::OnSpacebarKeyPressed(Scribble::KeyPressedEvent& e)
 
 bool Life::WorldLayer::OnWindowResize(Scribble::WindowResizeEvent& e)
 {
+	SCB_TRACE("OnWindowResize: {0}, {1}", e.GetWidth(), e.GetHeight());
 	ResetSize();
 	return false;
 }
 
 const glm::vec2 Life::WorldLayer::GetCellCoords(float xPos, float yPos) const
 {
-	float x = xPos / m_ScaleFactor;
-	float y = yPos / m_ScaleFactor;
+	float x = (xPos / m_ScaleFactor) + (GRID_OFFSET_X / 2);
+	float y = (yPos / m_ScaleFactor) + (GRID_OFFSET_Y / 2);
 
 	return { x, y };
 	
 }
 glm::vec2 Life::WorldLayer::GetCellCoords(float xPos, float yPos)
 {
-	float x = xPos / m_ScaleFactor;
-	float y = yPos / m_ScaleFactor;
+	float x = (xPos / m_ScaleFactor) + (GRID_OFFSET_X / 2);
+	float y = (yPos / m_ScaleFactor) + (GRID_OFFSET_Y / 2);
 
 	return { x, y };
 
@@ -112,18 +113,16 @@ void Life::WorldLayer::Reset()
 	SCB_INFO("Window Size: ({0} x {1})", windowWidth, windowHeight);
 
 
-	//TODO: - 10 is a hardcoded magic number. Replace - 10 with - BUFFER or some other constant.
-	m_ScaleFactor = windowHeight / (m_World.GetHeight() - 10);
+	m_ScaleFactor = windowHeight / (m_World.GetHeight() - GRID_OFFSET_Y);
 	float cellSize = m_ScaleFactor * 0.7;
 	SCB_INFO("Tile Size: {0}", m_ScaleFactor);
 	SCB_INFO("Cell Size: {0}", cellSize);
 
-	//TODO: 5 should be replaced with BUFFER / 2 both in the for loop statement and the for loop body
-	for (int i = -5; i < (int)m_World.GetWidth() - 5; i++) {
-		for (int j = -5; j < (int)m_World.GetHeight() - 5; j++) {
+	for (int i = -GRID_OFFSET_X / 2; i < (int)m_World.GetWidth() - GRID_OFFSET_X / 2; i++) {
+		for (int j = -GRID_OFFSET_Y / 2; j < (int)m_World.GetHeight() - GRID_OFFSET_Y / 2; j++) {
 			m_World.InitCell(
-				i + 5,
-				j + 5,
+				i + GRID_OFFSET_X / 2,
+				j + GRID_OFFSET_Y / 2,
 				i * m_ScaleFactor, // = xPos
 				j * m_ScaleFactor, // = yPos
 				cellSize,
@@ -149,28 +148,26 @@ void Life::WorldLayer::ResetSize()
 	unsigned int windowWidth = Scribble::Application::Get().GetWindow().GetWidth();
 	SCB_INFO("Window Size: ({0} x {1})", windowWidth, windowHeight);
 
-	m_ScaleFactor = windowHeight / m_World.GetHeight();
+	m_ScaleFactor = (float)windowHeight / (m_World.GetHeight() - GRID_OFFSET_Y);
 	float cellSize = m_ScaleFactor * 0.7;
 	SCB_INFO("Tile Size: {0}", m_ScaleFactor);
 	SCB_INFO("Cell Size: {0}", cellSize);
 
 
 	//TODO: Needs to be updated to cooperate with off-screen buffer.
-	for (int i = 0; i < m_World.GetWidth(); i++) {
-		for (int j = 0; j < m_World.GetHeight(); j++) {
+	for (int i = -GRID_OFFSET_X / 2; i < (int)m_World.GetWidth() - (GRID_OFFSET_X / 2); i++) {
+		for (int j = -GRID_OFFSET_Y / 2; j < (int)m_World.GetHeight() - (GRID_OFFSET_Y / 2); j++) {
 			m_World.ResetCell(
-				i,
-				j,
+				i + GRID_OFFSET_X / 2,
+				j + GRID_OFFSET_Y / 2,
 				i * m_ScaleFactor, // = xPos
 				j * m_ScaleFactor, // = yPos
 				cellSize,
 				cellSize,
 				0.0f,
 				glm::vec3(1.0f, 1.0f, 1.0f),
-				m_World.GetCellAt(i, j).IsAlive()
+				m_World.GetCellAt(i + (GRID_OFFSET_X / 2), j + (GRID_OFFSET_Y / 2)).IsAlive()
 			);
 		}
 	}
 }
-
-

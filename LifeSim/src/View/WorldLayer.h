@@ -12,6 +12,9 @@
 
 namespace Life {
 
+#define GRID_OFFSET_X 40
+#define GRID_OFFSET_Y 40
+
 	class WorldLayer : public Scribble::Layer
 	{
 	public:
