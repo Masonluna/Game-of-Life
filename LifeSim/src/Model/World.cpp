@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Life::World::World(unsigned int width, unsigned int height)
-	: m_Width(width), m_Height(height), m_Grid(std::make_shared<std::vector<Cell>>(width * height)), m_Backbuffer(std::make_shared<std::vector<Cell>>(width * height))
+	: m_Width(width), m_Height(height), m_Grid(std::make_shared<std::vector<Cell>>((width) * (height))), m_Backbuffer(std::make_shared<std::vector<Cell>>((width) * (height)))
 {
 }
 
@@ -33,7 +33,7 @@ void Life::World::ResetCell(int gridX, int gridY, float posX, float posY, float 
 // Any live cell with two or three live neighbours lives on to the next generation.
 // Any live cell with more than three live neighbours dies, as if by overpopulation.
 // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-bool Life::World::CheckForLife(unsigned int xPos, unsigned int yPos)
+bool Life::World::CheckForLife(int xPos, int yPos)
 {
     const int neighbors[8][2] = {
         {-1, -1}, {0, -1}, {1, -1},

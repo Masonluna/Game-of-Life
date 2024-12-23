@@ -9,7 +9,6 @@ Life::Cell::Cell(float x, float y, float width, float height, float rotation, gl
 
 void Life::Cell::Draw(Scribble::Renderer& renderer) const
 {
-
 	if (m_IsAlive) {
 		renderer.DrawQuad(m_Position, m_Size, m_Rotation, m_Color);
 	}

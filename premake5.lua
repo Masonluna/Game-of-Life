@@ -31,8 +31,6 @@ workspace "LifeSim"
             "%{prj.name}/vendor/Scribble2D/lib/Release"
         }
 
-
-
         filter "system:windows"
             cppdialect "C++17"
             staticruntime "On"

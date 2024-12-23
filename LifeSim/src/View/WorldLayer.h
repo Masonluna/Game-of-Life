@@ -20,6 +20,8 @@ namespace Life {
 		// Engine update and event handling
 		void OnUpdate(Scribble::Timestep ts) override;
 		void OnEvent(Scribble::Event& e) override;
+
+
 		bool OnEnterKeyPressed(Scribble::KeyPressedEvent& e);
 		bool OnMouseButtonPressed(Scribble::MouseButtonPressedEvent& e);
 		bool OnSpacebarKeyPressed(Scribble::KeyPressedEvent& e);

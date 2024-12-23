@@ -32,7 +32,7 @@ namespace Life {
 		void InitCell(int gridX, int gridY, float posX, float posY, float width, float height, float rotation, glm::vec3& color);
 		void ResetCell(int gridX, int gridY, float posX, float posY, float width, float height, float rotation, glm::vec3& color, bool isAlive);
 	private:
-		bool CheckForLife(unsigned int xPos, unsigned int yPos);
+		bool CheckForLife(int xPos, int yPos);
 		unsigned int m_Width;
 
 		std::shared_ptr<std::vector<Cell>> m_Grid;

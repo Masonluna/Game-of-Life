@@ -2,6 +2,9 @@
 #include <Scribble2D/Core/Application.h>
 #include <Scribble2D/Events/KeyEvent.h>
 
+
+// TODO: As of now, width and height are hardcoded, including the off-screen portion.
+//	A buffer offset should be decided on and added to width and height in m_World constructor.
 Life::WorldLayer::WorldLayer(int width, int height)
 	: Scribble::Layer("World"), m_World(width, height)
 {
@@ -108,18 +111,19 @@ void Life::WorldLayer::Reset()
 	unsigned int windowWidth = Scribble::Application::Get().GetWindow().GetWidth();
 	SCB_INFO("Window Size: ({0} x {1})", windowWidth, windowHeight);
 
-	m_ScaleFactor = windowHeight / m_World.GetHeight();
+
+	//TODO: - 10 is a hardcoded magic number. Replace - 10 with - BUFFER or some other constant.
+	m_ScaleFactor = windowHeight / (m_World.GetHeight() - 10);
 	float cellSize = m_ScaleFactor * 0.7;
 	SCB_INFO("Tile Size: {0}", m_ScaleFactor);
 	SCB_INFO("Cell Size: {0}", cellSize);
 
-
-
-	for (int i = 0; i < m_World.GetWidth(); i++) {
-		for (int j = 0; j < m_World.GetHeight(); j++) {
+	//TODO: 5 should be replaced with BUFFER / 2 both in the for loop statement and the for loop body
+	for (int i = -5; i < (int)m_World.GetWidth() - 5; i++) {
+		for (int j = -5; j < (int)m_World.GetHeight() - 5; j++) {
 			m_World.InitCell(
-				i,
-				j,
+				i + 5,
+				j + 5,
 				i * m_ScaleFactor, // = xPos
 				j * m_ScaleFactor, // = yPos
 				cellSize,
@@ -151,7 +155,7 @@ void Life::WorldLayer::ResetSize()
 	SCB_INFO("Cell Size: {0}", cellSize);
 
 
-
+	//TODO: Needs to be updated to cooperate with off-screen buffer.
 	for (int i = 0; i < m_World.GetWidth(); i++) {
 		for (int j = 0; j < m_World.GetHeight(); j++) {
 			m_World.ResetCell(
