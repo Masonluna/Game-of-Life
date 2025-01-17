@@ -9,6 +9,8 @@ Life::WorldLayer::WorldLayer(int width, int height)
 	: Scribble::Layer("World"), m_World(width + GRID_OFFSET_X, height + GRID_OFFSET_Y)
 {
 	m_Renderer.Init();
+	m_TextRenderer.Init();
+	m_TextRenderer.LoadFont("fonts/ocraext.TTF", 18);
 	Reset();
 }
 
@@ -24,6 +26,9 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 	for (const Cell& cell : *m_World.GetGrid()) {
 		cell.Draw(m_Renderer);
 	}
+
+	m_TextRenderer.DrawString("Enter: Play/Pause", glm::vec2(5.0f, 5.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_TextRenderer.DrawString("Left Click to place Cell!", glm::vec2(5.0f, 25.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 }
 
@@ -49,25 +54,30 @@ bool Life::WorldLayer::OnEnterKeyPressed(Scribble::KeyPressedEvent& e)
 bool Life::WorldLayer::OnMouseButtonPressed(Scribble::MouseButtonPressedEvent& e)
 {
 	SCB_TRACE(e);
-	float mouseX = Scribble::Input::GetMouseX();
-	float mouseY = Scribble::Input::GetMouseY();
-	SCB_TRACE("Getting Cell at Position: ({0},{1})", mouseX, mouseY);
-	glm::vec2 cellCoords = GetCellCoords(mouseX, mouseY);
-	SCB_TRACE("Cell Coords under mouse: ({0}, {1})", cellCoords.x, cellCoords.y);
 
-	if (cellCoords.x >= m_World.GetWidth() || cellCoords.y >= m_World.GetHeight()) {
-		SCB_WARN("Clicking Out of Bounds");
-		return false;
-	}
+	if (!m_StartedSim) {
+		SCB_TRACE("Placing Cell");
+		float mouseX = Scribble::Input::GetMouseX();
+		float mouseY = Scribble::Input::GetMouseY();
+		SCB_TRACE("Getting Cell at Position: ({0},{1})", mouseX, mouseY);
+		glm::vec2 cellCoords = GetCellCoords(mouseX, mouseY);
+		SCB_TRACE("Cell Coords under mouse: ({0}, {1})", cellCoords.x, cellCoords.y);
 
-	Cell& cell = m_World.GetCellAt(cellCoords.x, cellCoords.y);
-	SCB_INFO("Recovered Cell Position: ({0}, {1})", cell.GetPosition().x, cell.GetPosition().y);
+		if (cellCoords.x >= m_World.GetWidth() || cellCoords.y >= m_World.GetHeight()) {
+			SCB_WARN("Clicking Out of Bounds");
+			return false;
+		}
 
-	if (!cell.IsAlive()) {
-		cell.SetAlive(true);
-	}
-	else {
-		cell.SetAlive(false);
+		Cell& cell = m_World.GetCellAt(cellCoords.x, cellCoords.y);
+		SCB_INFO("Recovered Cell Position: ({0}, {1})", cell.GetPosition().x, cell.GetPosition().y);
+
+
+		if (!cell.IsAlive()) {
+			cell.SetAlive(true);
+		}
+		else {
+			cell.SetAlive(false);
+		}
 	}
 	return false;
 }
