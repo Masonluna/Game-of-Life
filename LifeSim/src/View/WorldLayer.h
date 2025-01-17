@@ -41,7 +41,7 @@ namespace Life {
 		void OnPauseButtonPressed() { m_StartedSim = !m_StartedSim; }
 		void Reset();
 		void ResetSize();
-		void OncePerSecond()
+		void OncePerTick()
 		{
 			if (m_StartedSim) {
 				m_World.Update();

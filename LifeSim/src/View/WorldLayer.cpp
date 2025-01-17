@@ -18,9 +18,11 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 {
 	m_TimeElapsed += ts.GetSeconds();
 
-	while (m_TimeElapsed >= 0.10f) {
-		OncePerSecond();
-		m_TimeElapsed -= 0.10f;
+	float tickTime = 0.1f;
+
+	while (m_TimeElapsed >= tickTime) {
+		OncePerTick();
+		m_TimeElapsed -= tickTime;
 	}
 
 	for (const Cell& cell : *m_World.GetGrid()) {
@@ -28,7 +30,7 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 	}
 
 	m_TextRenderer.DrawString("Enter: Play/Pause", glm::vec2(5.0f, 5.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	m_TextRenderer.DrawString("Left Click to place Cell!", glm::vec2(5.0f, 25.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_TextRenderer.DrawString("Left Click while paused to place a Cell!", glm::vec2(5.0f, 25.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 }
 
@@ -43,7 +45,7 @@ void Life::WorldLayer::OnEvent(Scribble::Event& e)
 
 bool Life::WorldLayer::OnEnterKeyPressed(Scribble::KeyPressedEvent& e)
 {
-	if (Scribble::Input::IsKeyPressed(Scribble::Enter))
+	if (Scribble::Input::IsKeyPressed(Scribble::Enter) || Scribble::Input::IsKeyPressed(Scribble::KPEnter))
 	{
 		SCB_TRACE("WorldLayer::PauseButtonPressed");
 		OnPauseButtonPressed();
@@ -142,13 +144,11 @@ void Life::WorldLayer::Reset()
 		}
 	}
 
-
-
-	m_World.GetCellAt(160, 90).SetAlive(true);
-	m_World.GetCellAt(160, 91).SetAlive(true);
-	m_World.GetCellAt(159, 90).SetAlive(true);
-	m_World.GetCellAt(160, 89).SetAlive(true);
-	m_World.GetCellAt(161, 91).SetAlive(true);
+	m_World.GetCellAt(90, 55).SetAlive(true);
+	m_World.GetCellAt(90, 56).SetAlive(true);
+	m_World.GetCellAt(89, 55).SetAlive(true);
+	m_World.GetCellAt(90, 54).SetAlive(true);
+	m_World.GetCellAt(91, 56).SetAlive(true);
 }
 
 void Life::WorldLayer::ResetSize()
