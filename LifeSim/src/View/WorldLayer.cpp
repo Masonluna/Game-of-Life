@@ -31,7 +31,29 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 
 	m_TextRenderer.DrawString("Enter: Play/Pause", glm::vec2(5.0f, 5.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_TextRenderer.DrawString("Left Click while paused to place a Cell!", glm::vec2(5.0f, 25.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_TextRenderer.DrawString("Press Space while paused to reset to the starting position", glm::vec2(5.0f, 45.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_TextRenderer.DrawString("Press Esc while paused to clear the board", glm::vec2(5.0f, 65.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
+
+	// TO-DO: Currently, world coordinates do not translate to pixels properly once the window has been resized.
+	// If the application starts at 1280x720, then resizes to 1920x1080, then (1280, 720) is still considered the bottom right corner
+	// It's cool that you don't have to try querying the app for the size every time, but now the numbers are downright magical.
+	if (m_StartedSim) {
+		m_TextRenderer.DrawString(
+			"RUNNING",
+			glm::vec2(1200.0f, 695.0f),
+			0.8f,
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
+	}
+	else {
+		m_TextRenderer.DrawString(
+			"PAUSED",
+			glm::vec2(1200.0f, 695.0f),
+			0.8f,
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
+	}
 }
 
 void Life::WorldLayer::OnEvent(Scribble::Event& e)
@@ -41,6 +63,7 @@ void Life::WorldLayer::OnEvent(Scribble::Event& e)
 	dispatcher.Dispatch<Scribble::MouseButtonPressedEvent>(std::bind(&Life::WorldLayer::OnMouseButtonPressed, this, std::placeholders::_1));
 	dispatcher.Dispatch<Scribble::KeyPressedEvent>(std::bind(&Life::WorldLayer::OnSpacebarKeyPressed, this, std::placeholders::_1));
 	dispatcher.Dispatch<Scribble::WindowResizeEvent>(std::bind(&Life::WorldLayer::OnWindowResize, this, std::placeholders::_1));
+	dispatcher.Dispatch<Scribble::KeyPressedEvent>(std::bind(&Life::WorldLayer::OnEscKeyPressed, this, std::placeholders::_1));
 }
 
 bool Life::WorldLayer::OnEnterKeyPressed(Scribble::KeyPressedEvent& e)
@@ -87,7 +110,7 @@ bool Life::WorldLayer::OnMouseButtonPressed(Scribble::MouseButtonPressedEvent& e
 bool Life::WorldLayer::OnSpacebarKeyPressed(Scribble::KeyPressedEvent& e)
 {
 	SCB_TRACE(e);
-	if (Scribble::Input::IsKeyPressed(Scribble::Space)) {
+	if (Scribble::Input::IsKeyPressed(Scribble::Space) && !m_StartedSim) {
 		Reset();
 	}
 	return false;
@@ -97,6 +120,15 @@ bool Life::WorldLayer::OnWindowResize(Scribble::WindowResizeEvent& e)
 {
 	SCB_TRACE("OnWindowResize: {0}, {1}", e.GetWidth(), e.GetHeight());
 	ResetSize();
+	return false;
+}
+
+bool Life::WorldLayer::OnEscKeyPressed(Scribble::KeyPressedEvent& e) 
+{	
+	if (Scribble::Input::IsKeyPressed(Scribble::Escape) && !m_StartedSim) {
+		SCB_TRACE("Escape Key Pressed");
+		ClearBoard();
+	}
 	return false;
 }
 
@@ -178,6 +210,16 @@ void Life::WorldLayer::ResetSize()
 				glm::vec3(1.0f, 1.0f, 1.0f),
 				m_World.GetCellAt(i + (GRID_OFFSET_X / 2), j + (GRID_OFFSET_Y / 2)).IsAlive()
 			);
+		}
+	}
+}
+
+void Life::WorldLayer::ClearBoard()
+{
+	SCB_TRACE("ClearBoard Called");
+	for (int i = 0; i < m_World.GetWidth(); i++) {
+		for (int j = 0; j < m_World.GetHeight(); j++) {
+			m_World.GetCellAt(i, j).SetAlive(false);
 		}
 	}
 }

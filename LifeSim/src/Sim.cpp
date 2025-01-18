@@ -13,7 +13,7 @@ namespace Life {
             : Scribble::Application(specs)
         {
             // TODO: This should be a 16:9 ratio, then a buffer should be added from WorldLayer constructor
-            PushLayer(new WorldLayer(360, 180));
+            PushLayer(new WorldLayer(160, 90));
         }
         ~Sim() {}
 

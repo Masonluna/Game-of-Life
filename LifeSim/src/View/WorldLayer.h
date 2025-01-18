@@ -30,7 +30,7 @@ namespace Life {
 		bool OnMouseButtonPressed(Scribble::MouseButtonPressedEvent& e);
 		bool OnSpacebarKeyPressed(Scribble::KeyPressedEvent& e);
 		bool OnWindowResize(Scribble::WindowResizeEvent& e);
-
+		bool OnEscKeyPressed(Scribble::KeyPressedEvent& e);
 
 		// Coordinate Accessors
 		const glm::vec2 GetCellCoords(float xPos, float yPos) const;
@@ -41,6 +41,7 @@ namespace Life {
 		void OnPauseButtonPressed() { m_StartedSim = !m_StartedSim; }
 		void Reset();
 		void ResetSize();
+		void ClearBoard();
 		void OncePerTick()
 		{
 			if (m_StartedSim) {
