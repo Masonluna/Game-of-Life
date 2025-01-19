@@ -23,7 +23,7 @@ workspace "LifeSim"
 
         includedirs {
             "%{prj.name}/src",
-            "%{prj.name}/Scribble2D/Scribble2D-Core/include"
+            "Scribble2D/Scribble2D-Core/include"
         }
 
         libdirs {
