@@ -23,12 +23,12 @@ workspace "LifeSim"
 
         includedirs {
             "%{prj.name}/src",
-            "%{prj.name}/vendor/Scribble2D/include"
+            "%{prj.name}/Scribble2D/Scribble2D-Core/include"
         }
 
         libdirs {
-            "%{prj.name}/vendor/Scribble2D/lib/Debug",
-            "%{prj.name}/vendor/Scribble2D/lib/Release"
+            "%{prj.name}/Scribble2D/Scribble2D-Core/bin/Debug-windows-x86_64/Scribble2D-Core",
+            "%{prj.name}//Scribble2D/Scribble2D-Core/bin/Release-windows-x86_64/Scribble2D-Core"
         }
 
         filter "system:windows"
