@@ -27,8 +27,8 @@ workspace "LifeSim"
         }
 
         libdirs {
-            "Scribble2D/Scribble2D-Core/bin/Debug-windows-x86_64/Scribble2D-Core",
-            "Scribble2D/Scribble2D-Core/bin/Release-windows-x86_64/Scribble2D-Core"
+            "Scribble2D/bin/Debug-windows-x86_64/Scribble2D-Core",
+            "Scribble2D/bin/Release-windows-x86_64/Scribble2D-Core"
         }
 
         filter "system:windows"
