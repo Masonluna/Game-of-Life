@@ -46,3 +46,6 @@ workspace "LifeSim"
 
         filter "action:vs*"
             buildoptions { "/utf-8" }
+
+
+        include "Scribble2D/Scribble2D-Core"

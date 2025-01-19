@@ -1,0 +1,4 @@
+[submodule "Scribble2D"]
+	path = Scribble2D
+	url = https://github.com/Masonluna/Scribble2D
+	branch = core
