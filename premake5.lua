@@ -31,6 +31,8 @@ workspace "LifeSim"
             "Scribble2D/bin/Release-windows-x86_64/Scribble2D-Core"
         }
 
+        dependson { "Scribble2D-Core" }
+
         filter "system:windows"
             cppdialect "C++17"
             staticruntime "On"
