@@ -5,8 +5,6 @@
 #include <iomanip>
 
 
-// TODO: As of now, width and height are hardcoded, including the off-screen portion.
-//	A buffer offset should be decided on and added to width and height in m_World constructor.
 Life::WorldLayer::WorldLayer(int width, int height)
 	: Scribble::Layer("World"), m_World(width + GRID_OFFSET_X, height + GRID_OFFSET_Y)
 {
@@ -213,7 +211,6 @@ void Life::WorldLayer::ResetSize()
 	SCB_INFO("Cell Size: {0}", cellSize);
 
 
-	//TODO: Needs to be updated to cooperate with off-screen buffer.
 	for (int i = -GRID_OFFSET_X / 2; i < (int)m_World.GetWidth() - (GRID_OFFSET_X / 2); i++) {
 		for (int j = -GRID_OFFSET_Y / 2; j < (int)m_World.GetHeight() - (GRID_OFFSET_Y / 2); j++) {
 			m_World.ResetCell(
