@@ -2,6 +2,8 @@
 #include <Scribble2D/Core/Application.h>
 #include <Scribble2D/Events/KeyEvent.h>
 
+#include <iomanip>
+
 
 // TODO: As of now, width and height are hardcoded, including the off-screen portion.
 //	A buffer offset should be decided on and added to width and height in m_World constructor.
@@ -18,11 +20,9 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 {
 	m_TimeElapsed += ts.GetSeconds();
 
-	float tickTime = 0.1f;
-
-	while (m_TimeElapsed >= tickTime) {
+	while (m_TimeElapsed >= m_Tick) {
 		OncePerTick();
-		m_TimeElapsed -= tickTime;
+		m_TimeElapsed -= m_Tick;
 	}
 
 	for (const Cell& cell : *m_World.GetGrid()) {
@@ -34,14 +34,19 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 	m_TextRenderer.DrawString("Press Space while paused to reset to the starting position", glm::vec2(5.0f, 45.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_TextRenderer.DrawString("Press Esc while paused to clear the board", glm::vec2(5.0f, 65.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
+	std::ostringstream oss;
+	oss << "Tick Time: " << std::fixed << std::setprecision(2) << m_Tick << "s";
 
+
+	m_TextRenderer.DrawString("Use arrows to adjust speed!", glm::vec2(5.0f, 675.0f), 0.8f, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_TextRenderer.DrawString(oss.str(), glm::vec2(5.0f, 695.0f), 0.8f, glm::vec3(0.0f, 1.0f, 0.0f));
 	// TO-DO: Currently, world coordinates do not translate to pixels properly once the window has been resized.
 	// If the application starts at 1280x720, then resizes to 1920x1080, then (1280, 720) is still considered the bottom right corner
 	// It's cool that you don't have to try querying the app for the size every time, but now the numbers are downright magical.
 	if (m_StartedSim) {
 		m_TextRenderer.DrawString(
 			"RUNNING",
-			glm::vec2(1200.0f, 695.0f),
+			glm::vec2(1210.0f, 695.0f),
 			0.8f,
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
@@ -49,7 +54,7 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 	else {
 		m_TextRenderer.DrawString(
 			"PAUSED",
-			glm::vec2(1200.0f, 695.0f),
+			glm::vec2(1220.0f, 695.0f),
 			0.8f,
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
@@ -64,6 +69,7 @@ void Life::WorldLayer::OnEvent(Scribble::Event& e)
 	dispatcher.Dispatch<Scribble::KeyPressedEvent>(std::bind(&Life::WorldLayer::OnSpacebarKeyPressed, this, std::placeholders::_1));
 	dispatcher.Dispatch<Scribble::WindowResizeEvent>(std::bind(&Life::WorldLayer::OnWindowResize, this, std::placeholders::_1));
 	dispatcher.Dispatch<Scribble::KeyPressedEvent>(std::bind(&Life::WorldLayer::OnEscKeyPressed, this, std::placeholders::_1));
+	dispatcher.Dispatch<Scribble::KeyPressedEvent>(std::bind(&Life::WorldLayer::OnArrowKeyPressed, this, std::placeholders::_1));
 }
 
 bool Life::WorldLayer::OnEnterKeyPressed(Scribble::KeyPressedEvent& e)
@@ -128,6 +134,17 @@ bool Life::WorldLayer::OnEscKeyPressed(Scribble::KeyPressedEvent& e)
 	if (Scribble::Input::IsKeyPressed(Scribble::Escape) && !m_StartedSim) {
 		SCB_TRACE("Escape Key Pressed");
 		ClearBoard();
+	}
+	return false;
+}
+
+bool Life::WorldLayer::OnArrowKeyPressed(Scribble::KeyPressedEvent& e)
+{
+	if ((Scribble::Input::IsKeyPressed(Scribble::Up) || Scribble::Input::IsKeyPressed(Scribble::Right)) && m_Tick > 0.021f) {
+		m_Tick -= 0.02f;
+	}
+	else if ((Scribble::Input::IsKeyPressed(Scribble::Down) || Scribble::Input::IsKeyPressed(Scribble::Left)) && m_Tick < 0.2f) {
+		m_Tick += 0.02f;
 	}
 	return false;
 }

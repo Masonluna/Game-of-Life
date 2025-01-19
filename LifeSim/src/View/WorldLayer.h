@@ -31,6 +31,8 @@ namespace Life {
 		bool OnSpacebarKeyPressed(Scribble::KeyPressedEvent& e);
 		bool OnWindowResize(Scribble::WindowResizeEvent& e);
 		bool OnEscKeyPressed(Scribble::KeyPressedEvent& e);
+		bool OnArrowKeyPressed(Scribble::KeyPressedEvent& e);
+
 
 		// Coordinate Accessors
 		const glm::vec2 GetCellCoords(float xPos, float yPos) const;
@@ -56,6 +58,7 @@ namespace Life {
 		World m_World;
 		float m_TimeElapsed = 0.0f;
 		float m_ScaleFactor = 0.0f;
+		float m_Tick = 0.1f;
 	};
 
 }
