@@ -36,7 +36,7 @@ void Life::WorldLayer::OnUpdate(Scribble::Timestep ts)
 	oss << "Tick Time: " << std::fixed << std::setprecision(2) << m_Tick << "s";
 
 
-	m_TextRenderer.DrawString("Use arrows to adjust speed!", glm::vec2(5.0f, 675.0f), 0.8f, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_TextRenderer.DrawString("Use arrow keys to adjust speed!", glm::vec2(5.0f, 675.0f), 0.8f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_TextRenderer.DrawString(oss.str(), glm::vec2(5.0f, 695.0f), 0.8f, glm::vec3(0.0f, 1.0f, 0.0f));
 	// TO-DO: Currently, world coordinates do not translate to pixels properly once the window has been resized.
 	// If the application starts at 1280x720, then resizes to 1920x1080, then (1280, 720) is still considered the bottom right corner
@@ -138,10 +138,10 @@ bool Life::WorldLayer::OnEscKeyPressed(Scribble::KeyPressedEvent& e)
 
 bool Life::WorldLayer::OnArrowKeyPressed(Scribble::KeyPressedEvent& e)
 {
-	if ((Scribble::Input::IsKeyPressed(Scribble::Up) || Scribble::Input::IsKeyPressed(Scribble::Right)) && m_Tick > 0.021f) {
+	if ((Scribble::Input::IsKeyPressed(Scribble::Down) || Scribble::Input::IsKeyPressed(Scribble::Left)) && m_Tick > 0.021f) {
 		m_Tick -= 0.02f;
 	}
-	else if ((Scribble::Input::IsKeyPressed(Scribble::Down) || Scribble::Input::IsKeyPressed(Scribble::Left)) && m_Tick < 0.2f) {
+	else if ((Scribble::Input::IsKeyPressed(Scribble::Up) || Scribble::Input::IsKeyPressed(Scribble::Right)) && m_Tick < 0.2f) {
 		m_Tick += 0.02f;
 	}
 	return false;
