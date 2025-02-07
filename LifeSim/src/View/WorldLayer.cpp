@@ -6,11 +6,12 @@
 
 
 Life::WorldLayer::WorldLayer(int width, int height)
-	: Scribble::Layer("World"), m_World(width + GRID_OFFSET_X, height + GRID_OFFSET_Y)
+	: Scribble::Layer("World"), m_World(width + GRID_OFFSET_X, height + GRID_OFFSET_Y),
+	m_Renderer(Scribble::Application::Get().GetRenderer()),
+	m_TextRenderer(Scribble::Application::Get().GetTextRenderer())
 {
-	m_Renderer.Init();
-	m_TextRenderer.Init();
 	m_TextRenderer.LoadFont("fonts/ocraext.TTF", 18);
+	m_Renderer.SetClearColor(glm::vec4(0.1f, 0.1f, 0.15f, 1.0f));
 	Reset();
 }
 
@@ -187,7 +188,7 @@ void Life::WorldLayer::Reset()
 				cellSize,
 				cellSize,
 				0.0f,
-				glm::vec3(1.0f, 1.0f, 1.0f));
+				glm::vec3(0.8f, 0.8f, 0.6f));
 		}
 	}
 
@@ -221,7 +222,7 @@ void Life::WorldLayer::ResetSize()
 				cellSize,
 				cellSize,
 				0.0f,
-				glm::vec3(1.0f, 1.0f, 1.0f),
+				glm::vec3(0.8f, 0.8f, 0.6f),
 				m_World.GetCellAt(i + (GRID_OFFSET_X / 2), j + (GRID_OFFSET_Y / 2)).IsAlive()
 			);
 		}

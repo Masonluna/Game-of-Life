@@ -6,6 +6,7 @@
 #include "Scribble2D/Core/Log.h"
 #include "Scribble2D/Events/KeyEvent.h"
 #include "Scribble2D/Events/MouseEvent.h"
+#include "Scribble2D/Events/ApplicationEvent.h"
 #include "Scribble2D/Core/Input.h"
 #include "Scribble2D/Renderer/TextRenderer.h"
 
@@ -53,8 +54,8 @@ namespace Life {
 
 	private:
 		bool m_StartedSim = false;
-		Scribble::Renderer m_Renderer;
-		Scribble::TextRenderer m_TextRenderer;
+		Scribble::Renderer& m_Renderer;
+		Scribble::TextRenderer& m_TextRenderer;
 		World m_World;
 		float m_TimeElapsed = 0.0f;
 		float m_ScaleFactor = 0.0f;
